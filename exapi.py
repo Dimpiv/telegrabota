@@ -62,11 +62,15 @@ class ExApi:
         # TODO end to full convert functional
         pass
 
-    def get_statistic(self, delay_time: int = 7) -> dict:
+    def get_statistic(self, delay_time: int = 7, c_1: str = 'USD', c_2: str = 'CAD') -> dict:
+        result = dict()
         start = datetime.datetime.now() - timedelta(days=delay_time)
         end = datetime.datetime.now()
-        pre_string = f'history?start_at={start.strftime("%Y-%m-%d")}&end_at={end.strftime("%Y-%m-%d")}&base=USD&symbols=CAD'
+        pre_string = f'history?start_at={start.strftime("%Y-%m-%d")}&end_at={end.strftime("%Y-%m-%d")}&base={c_1}&symbols={c_2}'
         url = self.url + pre_string
-        r = requests.get(url)
-        result = r.json()
+        try:
+            r = requests.get(url)
+            result = r.json()
+        except requests.RequestException:
+            pass
         return result
